@@ -1,5 +1,5 @@
-
 <?php
+
 	require "connect.php";
 	
 	$result=$conn->query("SELECT * FROM users");	
@@ -9,15 +9,13 @@
 	$fields=$result->fetch_fields();
 ?>	
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+<link rel="stylesheet" href="css/bootstrap.min.css" >
+<link rel="stylesheet" href="css/bootstrap-theme.min.css" >
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="css/style.css" >
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-<script>
-	var table="users";
+<script type="text/javascript">
+	var fields=[];
 </script>
-<script src="js/script.js"></script>
 <div id="status">
 </div>
 	<div class="row">
@@ -32,21 +30,31 @@
 
 <?php
 	$flag=0;
-	foreach ($fields as $field_name){
+	$addRow="<tr>";
+	foreach ($fields as $field){
 		if($flag==0)
 			$flag=1;
-		else
-			echo "<th>".$field_name->name."</th>";
+		else{
+			echo "<th>".$field->name."</th>";
+			$addRow.="<td class='addRowInput' ><input type='text' name='$field->name' id='add-id-$field->name' placeholder='Enter $field->name' class='addRowInput' /></td>
+			<script>
+				fields.push('$field->name');
+			</script>	
+			";	
+		}
 	}
+		echo "<th></th>";
+	$addRow.="<td><span class='fa fa-plus' id='addNewButton'></span></td></tr>";
 ?>
 						</thead>
 						<tbody>
 <?php
+	echo $addRow;
 	foreach ($data as $row){
 			echo "<tr>";
 		$flag=0;
 		$rowIndex="";
-		foreach ($fields as $field_name){
+		foreach ($fields as $field){
 			///*
 			if($flag==0){
 				$flag=1;
@@ -54,12 +62,12 @@
 				$dataIndex=1;
 			}
 			else
-				echo "<td><input type='text' value='".$row[$dataIndex++]."' name='".$field_name->name."' id='".$rowIndex."' ></td>";
+				echo "<td><input type='text' value='".$row[$dataIndex++]."' name='".$field->name."' id='".$rowIndex."' ></td>";
 			//*/
 				//echo $field_name;
 		}	
 
-			echo "</tr>";
+			echo "<td></td></tr>";
 
 	}
 ?>
@@ -69,3 +77,10 @@
 			</div>
 		</div>		
 	</div>	
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<script>
+	var table="users";
+</script>
+<script src="js/script.js"></script>
+

@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	
-	$("td > input")
+	$("td > input[class!='addRowInput']")
 	.focus(function(){
 		$(this)
 		.css({
@@ -28,7 +28,8 @@ $(document).ready(function(){
 				data.name=name;
 				data.oldValue=oldValue;
 				data.newValue=newValue;
-				return data;	
+				return JSON.stringify(data);	
+				//return data;	
 			})(),
 			success:function(data){
 				$("#status").text(data);
@@ -37,5 +38,31 @@ $(document).ready(function(){
 	})
 	.keypress(function(e){
 		//alert(e.which);
+	});
+
+
+	$('#addNewButton').click(function(){
+		function getData(){
+			return $('#add-id-'+field).val();
+		}
+		$.ajax({
+			url:"ajax.php",
+			type:"POST",
+			data:(function () {
+				var data={};
+				data.table=table;
+				data.operation="add";
+				var returnData={};
+				for(field in fields){
+					returnData[fields[field]]=($('#add-id-'+fields[field]).val());
+				}
+				//data.fields=fields;
+				data.values=returnData;
+				return JSON.stringify(data);	
+			})(),
+			success:function(data){
+				$("#status").text(data);
+			}
+		});
 	});
 });	

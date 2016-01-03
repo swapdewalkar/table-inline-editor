@@ -1,4 +1,19 @@
+td,th{
+	//width:200px;
+}
 input{
 	border:0px;
-	width:100px;
+	width:150px;
+}
+td >input{
+
+}
+td.addRowInput{
+
+}
+td > input.addRowInput{
+	background: #0F5252;
+	width:150px;
+	border:1px solid black;
+	border-radius: 5px;
 }
