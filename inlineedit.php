@@ -1,3 +1,7 @@
+<!--
+Athor: Swapnil Ashok Dewalkar
+Email: swapdewalkar@gmail.com
+-->
 <?php
 
 	require "connect.php";
@@ -32,8 +36,10 @@
 	$flag=0;
 	$addRow="<tr>";
 	foreach ($fields as $field){
-		if($flag==0)
+		if($flag==0){
 			$flag=1;
+			echo "<script>primary='$field->name';</script>";
+		}
 		else{
 			echo "<th>".$field->name."</th>";
 			$addRow.="<td class='addRowInput' ><input type='text' name='$field->name' id='add-id-$field->name' placeholder='Enter $field->name' class='addRowInput' /></td>
@@ -51,23 +57,19 @@
 <?php
 	echo $addRow;
 	foreach ($data as $row){
-			echo "<tr>";
 		$flag=0;
-		$rowIndex="";
+		$rowIndex=$row[0];
+		echo "<tr id='row-$rowIndex'>";
 		foreach ($fields as $field){
-			///*
 			if($flag==0){
 				$flag=1;
-				$rowIndex=$row[0];
 				$dataIndex=1;
 			}
 			else
 				echo "<td><input type='text' value='".$row[$dataIndex++]."' name='".$field->name."' id='".$rowIndex."' ></td>";
-			//*/
-				//echo $field_name;
 		}	
 
-			echo "<td></td></tr>";
+			echo "<td><span class='fa fa-trash deleteButton' name='".$fields[0]->name."' id='$rowIndex'></span></td></tr>";
 
 	}
 ?>
