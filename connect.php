@@ -3,11 +3,6 @@
 Athor: Swapnil Ashok Dewalkar
 Email: swapdewalkar@gmail.com
 */
-	$host="localhost";
-	$database="etendering";
-	$user="root";
-	$password="";
-	$table="users";	
 	$conn = new mysqli($host, $user, $password, $database);
  
 	// check connection

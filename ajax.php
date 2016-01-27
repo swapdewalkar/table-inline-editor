@@ -1,23 +1,33 @@
+
 <?php
 /*
 Athor: Swapnil Ashok Dewalkar
 Email: swapdewalkar@gmail.com
 */
-	require "connect.php";
 	$json=file_get_contents('php://input');
 	$data=json_decode($json);
-	$table=$data->table;
 	$operation=$data->operation;
+	$table=$data->table;
+	$host=$data->host;
+	$database=$data->database;
+	$user=$data->user;
+	$password=$data->password;
+	$table="users";	
+	
+	require "connect.php";
 	
 	if($operation=="edit")	{
-		$id=$data->id;
+		$inputId=$data->inputId;
+		$rowId=$data->rowId;
 		$oldValue=$data->oldValue;
 		$newValue=$data->newValue;
 		$name=$data->name;
 		if($oldValue!=$newValue){
 			$returnData= new stdClass();
-			if($conn->query("UPDATE `$table` SET `$name`='$newValue' WHERE `id`='$id'")){
+			if($conn->query("UPDATE `$table` SET `$name`='$newValue' WHERE `id`='$rowId'")){
 				$returnData->msg="Value Has been Changed from ".$oldValue." to ".$newValue;
+				$returnData->newValue=$newValue;
+				$returnData->inputId=$inputId;
 			}	
 			else{
 				$returnData->error=100;

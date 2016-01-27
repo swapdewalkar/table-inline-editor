@@ -12,11 +12,10 @@ $(document).ready(function(){
 		});
 	})
 	.blur(function(){
-		var id=$(this).attr("id");
+		var id=$(this);
 		var name=$(this).attr("name");
 		var oldValue=$(this).attr("value");
 		var newValue=$(this).val();
-		//$(this).attr("contenteditable","true");
 		$(this)
 		.css({
 			"background":"white",
@@ -26,18 +25,23 @@ $(document).ready(function(){
 			type:"POST",
 			data:(function () {
 				var data={};
+				data.host=host;
+				data.database=database;
+				data.user=user;
+				data.password=password;
 				data.table=table;
 				data.operation="edit";
-				data.id=id;
+				data.inputId=id.attr("id");
+				data.rowId=id.parent().parent().attr("value");
 				data.name=name;
 				data.oldValue=oldValue;
 				data.newValue=newValue;
-				return JSON.stringify(data);	
-				//return data;	
+				return JSON.stringify(data);
 			})(),
 			success:function(data){
 				var data=JSON.parse(data);
 				$("#status").text(data.msg);
+				$('#'+data.inputId).attr("value",data.newValue);
 			}
 		});
 	})
@@ -55,6 +59,10 @@ $(document).ready(function(){
 			type:"POST",
 			data:(function () {
 				var data={};
+				data.host=host;
+				data.database=database;
+				data.user=user;
+				data.password=password;
 				data.table=table;
 				data.operation="add";
 				var returnData={};
@@ -86,12 +94,16 @@ $(document).ready(function(){
 	$('span.deleteButton').click(function(){
 		alert();
 		var nameId=$(this).attr("name");
-		var deleteId=$(this).attr("id");
+		var deleteId=$(this).parent().parent().attr("value");
 		$.ajax({
 			url:"ajax.php",
 			type:"POST",
 			data:(function () {
 				var data={};
+				data.host=host;
+				data.database=database;
+				data.user=user;
+				data.password=password;
 				data.table=table;
 				data.operation="delete";
 				data.value=deleteId;
