@@ -4,14 +4,14 @@ Email: swapdewalkar@gmail.com
 */
 $(document).ready(function(){
 	
-	$("td > input[class!='addRowInput']")
-	.focus(function(){
+	$(document)
+	.on("focus", "td > input[class!='addRowInput']",function(){
 		$(this)
 		.css({
 			"background":"yellow",
 		});
 	})
-	.blur(function(){
+	.on("blur", "td > input[class!='addRowInput']",function(){
 		var id=$(this);
 		var name=$(this).attr("name");
 		var oldValue=$(this).attr("value");
@@ -47,10 +47,8 @@ $(document).ready(function(){
 	})
 	.keypress(function(e){
 		//alert(e.which);
-	});
-
-
-	$('#addNewButton').click(function(){
+	})
+	.on("click", "#addNewButton",function(){
 		function getData(){
 			return $('#add-id-'+field).val();
 		}
@@ -77,22 +75,20 @@ $(document).ready(function(){
 				var data=JSON.parse(data);
 				var values=data.values;
 				$("#status").text(data.msg);
-				var row="<tr id='row-"+data.rowIndex+"'>";
+				var row="<tr id='row-"+data.rowIndex+"' value='"+data.rowIndex+"'>";
 				
 				/*for(value in values)
 					row+="<td>"+values[value]+"</td>";
 				*/
+				row+="<td><span class='fa fa-trash deleteButton' name='"+primary+"' id='del-"+data.rowIndex+"'></span></td>";
 				for(value in values)
 					row+="<td><input type='text' value='"+values[value]+"' name="+value+" id='"+data.rowIndex+"' ></td>";
-					row+="<td><span class='fa fa-trash deleteButton' name='"+primary+"' id='"+data.rowIndex+"'></span></td>";
 				row+="</tr>";
 				$('tbody').append(row);
 			}
 		});
-	});
-
-	$('span.deleteButton').click(function(){
-		alert();
+	})
+	.on("click", "span.deleteButton",function(){
 		var nameId=$(this).attr("name");
 		var deleteId=$(this).parent().parent().attr("value");
 		$.ajax({
