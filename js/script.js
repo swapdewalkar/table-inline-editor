@@ -75,16 +75,15 @@ $(document).ready(function(){
 				var data=JSON.parse(data);
 				var values=data.values;
 				$("#status").text(data.msg);
-				var row="<tr id='row-"+data.rowIndex+"' value='"+data.rowIndex+"'>";
-				
-				/*for(value in values)
-					row+="<td>"+values[value]+"</td>";
-				*/
-				row+="<td><span class='fa fa-trash deleteButton' name='"+primary+"' id='del-"+data.rowIndex+"'></span></td>";
+				var rowToAdd=[];
+				rowToAdd.push("<span class='fa fa-trash deleteButton' name='"+primary+"' id='del-"+data.rowIndex+"'></span>");
 				for(value in values)
-					row+="<td><input type='text' value='"+values[value]+"' name="+value+" id='"+data.rowIndex+"' ></td>";
-				row+="</tr>";
-				$('tbody').append(row);
+					rowToAdd.push("<input type='text' value='"+values[value]+"' name="+value+" id='"+data.rowIndex+"' >");
+			
+				var rowAddedRef=$('#dt').dataTable().fnAddData(rowToAdd);
+				 var row = $('#dt').dataTable().fnSettings().aoData[ rowAddedRef[0] ].nTr;
+				 $(row).attr("id","row-"+data.rowIndex);
+				 $(row).attr("value",data.rowIndex);
 			}
 		});
 	})
@@ -105,7 +104,7 @@ $(document).ready(function(){
 				data.value=deleteId;
 				data.name=nameId;
 				return JSON.stringify(data);	
-			})(),
+			})()	,
 			success:function(data){
 				//alert(data);
 				var data=JSON.parse(data);

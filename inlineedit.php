@@ -1,4 +1,3 @@
-
 <!--
 Athor: Swapnil Ashok Dewalkar
 Email: swapdewalkar@gmail.com
@@ -45,6 +44,7 @@ Email: swapdewalkar@gmail.com
 <script type="text/javascript">
 	var fields=[];
 </script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css"></style>
 <div id="status">
 </div>
 	<div class="row">
@@ -54,32 +54,40 @@ Email: swapdewalkar@gmail.com
 					<b><?= strtoupper($table); ?></b>
 				</div>
 				<div class="panel-body">
+					<?php
+							$flag=0;
+							$addRow="<tr><td><span class='fa fa-plus' id='addNewButton'></span></td>";
+							$tableHead="<th></th>";
+							foreach ($fields as $field){
+								if($flag==0){
+									$flag=1;
+									$tableHead.="<script>primary='$field->name';</script>";
+								}
+								else{
+									$tableHead.="<th>".$field->name."</th>";
+									$addRow.="<td class='addRowInput' ><input type='text' name='$field->name' id='add-id-$field->name' placeholder='Enter $field->name' class='addRowInput' /></td>
+									<script>
+										fields.push('$field->name');
+									</script>	
+									";	
+								}
+							}
+							$addRow.="</tr>";
+						?>
 					<table class="table table-hover">
 						<thead>
-							<?php
-								$flag=0;
-								$addRow="<tr><td><span class='fa fa-plus' id='addNewButton'></span></td>";
-								echo "<th></th>";
-								foreach ($fields as $field){
-									if($flag==0){
-										$flag=1;
-										echo "<script>primary='$field->name';</script>";
-									}
-									else{
-										echo "<th>".$field->name."</th>";
-										$addRow.="<td class='addRowInput' ><input type='text' name='$field->name' id='add-id-$field->name' placeholder='Enter $field->name' class='addRowInput' /></td>
-										<script>
-											fields.push('$field->name');
-										</script>	
-										";	
-									}
-								}
-								$addRow.="</tr>";
-							?>
+						</thead>
+						<tbody>
+						<?php echo $addRow; ?>
+						</tbody>
+					</table>						
+
+					<table class="table table-hover" id="dt">
+						<thead>
+							<?php echo $tableHead; ?>
 						</thead>
 						<tbody>
 							<?php
-								echo $addRow;
 								foreach ($data as $row){
 									$flag=0;
 									$rowIndex=$row[0];
@@ -116,5 +124,10 @@ Email: swapdewalkar@gmail.com
 	var password="<?= $password; ?>";
 	var table="<?= $table; ?>";
 </script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+<script>
+	var dataTable=$('#dt').DataTable();
+</script>
+<script src="https://cdn.datatables.net/plug-ins/1.10.11/api/fnAddTr.js"></script>
 <script src="js/script.js"></script>
 
